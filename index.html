@@ -116,3 +116,50 @@
 
   <button type="submit">إرسال إلى الأستاذ</button>
 </form>
+
+<form id="deft-form">
+  <h3>DEFT - اختبار إرسال البريد</h3>
+
+  <label for="message">رسالة الاختبار:</label>
+  <textarea
+    id="message"
+    name="message"
+    placeholder="اكتب رسالة تجريبية"
+    required
+  ></textarea>
+
+  <button type="submit">إرسال الرسالة</button>
+  <p id="status"></p>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init({
+    publicKey: "YOUR_PUBLIC_KEY"
+  });
+
+  document.getElementById("deft-form")
+    .addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const status = document.getElementById("status");
+      status.textContent = "جاري الإرسال...";
+
+      try {
+        await emailjs.send(
+          "service_pfw3g7m",
+          "template_2ongjk6",
+          {
+            message: document.getElementById("message").value,
+            to_email: "yahayh572@gmail.com"
+          }
+        );
+
+        status.textContent = "تم إرسال الرسالة بنجاح!";
+        this.reset();
+      } catch (error) {
+        status.textContent = "فشل الإرسال. تحقق من إعدادات EmailJS.";
+        console.error(error);
+      }
+    });
+</script>
